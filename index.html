@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recupera Cell — Loja</title>
+  <style>
+    :root{--bg:#000;--accent:#ff7a00;--muted:#222;--card:#111;--glass:rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:linear-gradient(180deg,var(--bg),#070707);
+      color:#fff;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Top navigation */
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.2));backdrop-filter: blur(6px);
+      position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(255,255,255,.03)
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#ff4b00);display:flex;align-items:center;justify-content:center;font-weight:700;color:#111
+    }
+    .brand h1{font-size:18px;margin:0}
+    nav{display:flex;gap:10px;align-items:center}
+    .menu-btn{background:none;border:0;color:inherit;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .menu-btn:hover{background:var(--glass)}
+
+    /* Layout */
+    .container{max-width:1100px;margin:18px auto;padding:0 18px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px}
+
+    /* Product list */
+    .products{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .card{background:linear-gradient(180deg,var(--card),#0b0b0b);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;gap:12px;align-items:center}
+    .thumb{width:96px;height:96px;border-radius:10px;background:linear-gradient(135deg,#222,#111);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .meta{flex:1}
+    .title{margin:0;font-size:16px}
+    .price{color:var(--accent);font-weight:700;margin-top:6px}
+    .actions{display:flex;gap:8px;align-items:center;margin-top:10px}
+    .btn{background:var(--accent);border:0;padding:8px 12px;border-radius:8px;color:#111;font-weight:700;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit}
+
+    /* Cart panel */
+    .cart{
+      position:sticky;top:80px;background:linear-gradient(180deg,#0b0b0b,#070707);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)
+    }
+    .cart h2{margin:0 0 8px 0}
+    .cart-items{max-height:320px;overflow:auto;margin:8px 0}
+    .cart-item{display:flex;justify-content:space-between;gap:8px;padding:8px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);margin-bottom:8px}
+    .qty{display:flex;gap:6px;align-items:center}
+    .icon-btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:6px;border-radius:6px;cursor:pointer}
+
+    /* Categories */
+    .categories{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+    .cat{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02);cursor:pointer}
+    .cat.active{background:linear-gradient(90deg,var(--accent),#ff4b00);color:#111}
+
+    /* Checkout form */
+    .checkout{margin-top:12px}
+    label{display:block;font-size:13px;margin:8px 0 6px;color:#ddd}
+    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#070707;color:#fff}
+    .small{font-size:13px;color:#aaa;margin-top:6px}
+
+    /* Footer */
+    footer{margin-top:28px;padding:18px 6px;text-align:center;color:#bbb;font-size:14px}
+
+    /* Mobile */
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .products{grid-template-columns:1fr}
+      .thumb{width:84px;height:84px}
+      .cart{position:fixed;right:10px;bottom:10px;width:92%;max-width:420px;z-index:60}
+      .topbar{padding:10px}
+    }
+
+    /* Tiny screens */
+    @media (max-width:420px){
+      .logo{width:40px;height:40px}
+      .brand h1{font-size:16px}
+    }
+
+    /* subtle focus */
+    button:focus,input:focus{outline:2px solid rgba(255,122,0,0.12)}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">RC</div>
+      <div>
+        <h1>Recupera Cell</h1>
+        <div style="font-size:12px;color:#bbb">Manutenção & Acessórios</div>
+      </div>
+    </div>
+
+    <nav>
+      <div class="categories" id="top-cats" style="margin-right:12px">
+        <!-- populated by JS -->
+      </div>
+      <button class="menu-btn" id="open-menu">Categorias ▾</button>
+      <button class="menu-btn" id="open-cart" title="Abrir carrinho">🛒 <span id="cart-count">0</span></button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <section>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <h2 style="margin:0">Produtos</h2>
+          <div class="small">Toque em "Adicionar" para colocar no carrinho.</div>
+        </div>
+
+        <div id="products" class="products">
+          <!-- cards injected by JS -->
+        </div>
+      </section>
+
+      <aside class="cart" id="cart-panel">
+        <h2>Seu Carrinho</h2>
+        <div class="cart-items" id="cart-items">
+          <!-- items -->
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="small">Total:</div>
+          <div id="cart-total" style="font-weight:800;color:var(--accent)">R$ 0,00</div>
+        </div>
+
+        <div class="checkout">
+          <label for="phone">Número da pessoa (WhatsApp/Telefone)</label>
+          <input id="phone" placeholder="(99) 99999-9999" />
+
+          <label for="obs">Observações</label>
+          <textarea id="obs" rows="3" placeholder="Ex: Horário de contato / Modelo do aparelho"></textarea>
+
+          <button class="btn" id="place-order" style="width:100%;margin-top:12px">Simular Pedido / Salvar</button>
+          <div class="small">Sem integração com servidor — os itens ficam no seu navegador.</div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      Desenvolvedor: <strong>Eliseu Tach Manutenção</strong> — Recupera Cell © <span id="year"></span>
+    </footer>
+  </main>
+
+  <script>
+    // Dados de exemplo — adicione/edite produtos aqui
+    const PRODUCTS = [
+      {id:1,name:'Troca de Tela iPhone 11',price:249.00,cat:'Tela'},
+      {id:2,name:'Bateria iPhone XR',price:129.00,cat:'Bateria'},
+      {id:3,name:'Conector de Carga USB-C',price:79.90,cat:'Conector'},
+      {id:4,name:'Reparo Placa Lógica',price:399.00,cat:'Placa'},
+      {id:5,name:'Película Temperada',price:29.90,cat:'Acessórios'},
+      {id:6,name:'Capinha Silicone',price:39.90,cat:'Acessórios'}
+    ];
+
+    // util
+    const money = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+
+    // state
+    let CART = JSON.parse(localStorage.getItem('rc_cart')||'{}');
+
+    function save(){localStorage.setItem('rc_cart',JSON.stringify(CART));renderCart();}
+
+    function renderProducts(filterCat){
+      const wrap = document.getElementById('products');wrap.innerHTML='';
+      const list = PRODUCTS.filter(p=>!filterCat||p.cat===filterCat);
+      for(const p of list){
+        const card = document.createElement('article');card.className='card';
+        card.innerHTML = `
+          <div class="thumb">📱</div>
+          <div class="meta">
+            <h3 class="title">${p.name}</h3>
+            <div class="price">${money(p.price)}</div>
+            <div class="actions">
+              <button class="btn" data-id="${p.id}">Adicionar</button>
+              <button class="btn ghost" data-id="${p.id}-info">Ver</button>
+            </div>
+          </div>`;
+        wrap.appendChild(card);
+      }
+      // attach listeners
+      wrap.querySelectorAll('.btn').forEach(b=>{
+        b.addEventListener('click',e=>{
+          const id = e.currentTarget.getAttribute('data-id');
+          if(id && id.endsWith('-info')){alert('Mais informações sobre o produto:\n'+PRODUCTS.find(x=>id.startsWith(x.id)).name);return}
+          addToCart(Number(id));
+        })
+      })
+    }
+
+    function addToCart(id){
+      const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+      if(!CART[id]) CART[id]={...p,qty:0};
+      CART[id].qty += 1;
+      save();
+      flashCartCount();
+    }
+
+    function removeFromCart(id){
+      if(!CART[id]) return; CART[id].qty -=1; if(CART[id].qty<=0) delete CART[id]; save();
+    }
+    function deleteItem(id){ if(CART[id]) delete CART[id]; save(); }
+
+    function renderCart(){
+      const wrap = document.getElementById('cart-items'); wrap.innerHTML='';
+      const keys = Object.keys(CART);
+      let total = 0; let count = 0;
+      if(keys.length===0){wrap.innerHTML='<div class="small">Carrinho vazio — adicione produtos.</div>'}
+      for(const k of keys){
+        const it = CART[k]; count += it.qty; total += it.price*it.qty;
+        const div = document.createElement('div'); div.className='cart-item';
+        div.innerHTML = `
+          <div style="flex:1">
+            <div style="font-weight:700">${it.name}</div>
+            <div class="small">${money(it.price)} x ${it.qty} = <strong>${money(it.price*it.qty)}</strong></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+            <div class="qty">
+              <button class="icon-btn" data-op="dec" data-id="${k}">-</button>
+              <div style="min-width:26px;text-align:center">${it.qty}</div>
+              <button class="icon-btn" data-op="inc" data-id="${k}">+</button>
+            </div>
+            <button class="icon-btn" data-op="del" data-id="${k}">🗑️</button>
+          </div>`;
+        wrap.appendChild(div);
+      }
+      document.getElementById('cart-total').textContent = money(total);
+      document.getElementById('cart-count').textContent = count;
+
+      // actions
+      wrap.querySelectorAll('.icon-btn').forEach(b=>{
+        b.addEventListener('click',e=>{
+          const op = b.getAttribute('data-op'); const id = b.getAttribute('data-id');
+          if(op==='inc') { CART[id].qty +=1; save();}
+          if(op==='dec') { removeFromCart(id);}
+          if(op==='del') { deleteItem(id); }
+        })
+      })
+      // persist cart to localStorage done in save()
+    }
+
+    function flashCartCount(){
+      const el = document.getElementById('cart-count'); el.animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:250});
+    }
+
+    // categories
+    const CATS = [...new Set(PRODUCTS.map(p=>p.cat))];
+    function renderCats(){
+      const wrap = document.getElementById('top-cats'); wrap.innerHTML='';
+      const all = document.createElement('button'); all.className='cat active'; all.textContent='Todos'; all.addEventListener('click',()=>{setActiveCat();renderProducts();}); wrap.appendChild(all);
+      for(const c of CATS){
+        const b = document.createElement('button'); b.className='cat'; b.textContent=c; b.addEventListener('click',()=>{setActiveCat(b);renderProducts(c)}); wrap.appendChild(b);
+      }
+    }
+    function setActiveCat(btn){ document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active')); if(btn) btn.classList.add('active'); else document.querySelector('.cat').classList.add('active'); }
+
+    // place order — since no server, we just save a snapshot locally and alert user
+    document.getElementById('place-order').addEventListener('click',()=>{
+      const phone = document.getElementById('phone').value.trim();
+      const obs = document.getElementById('obs').value.trim();
+      if(Object.keys(CART).length===0){alert('Seu carrinho está vazio'); return}
+      if(!phone){ if(!confirm('Você não informou número de contato. Deseja continuar sem número?')) return }
+      const order = {id: 'PED-'+Date.now(),phone,obs,items:CART,total: Object.values(CART).reduce((s,i)=>s+i.price*i.qty,0)};
+      // save orders locally
+      const history = JSON.parse(localStorage.getItem('rc_orders')||'[]'); history.push(order); localStorage.setItem('rc_orders',JSON.stringify(history));
+      alert('Pedido simulado salvo localmente. ID: '+order.id+'\nTotal: '+money(order.total));
+      // optionally clear cart
+      CART = {}; save(); document.getElementById('phone').value=''; document.getElementById('obs').value='';
+    });
+
+    // init
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderCats(); renderProducts(); renderCart();
+
+    // small UI hooks
+    document.getElementById('open-cart').addEventListener('click',()=>{ const el = document.getElementById('cart-panel'); el.scrollIntoView({behavior:'smooth',block:'center'}); el.animate([{transform:'translateY(6px)'},{transform:'translateY(0)'}],{duration:240})});
+    document.getElementById('open-menu').addEventListener('click',()=>{ const c = document.getElementById('top-cats'); c.scrollIntoView({behavior:'smooth',block:'center'});});
+
+  </script>
+</body>
+</html>
