@@ -16,16 +16,14 @@ const produtos = [
     nome: "Troca de Tela",
     descricao: "Substituímos a tela com qualidade e garantia.",
     preco: 250.0,
-    imagem:
-      "https://cdn-icons-png.flaticon.com/512/2282/2282188.png",
+    imagem: "https://cdn-icons-png.flaticon.com/512/2282/2282188.png",
   },
   {
     id: 2,
     nome: "Bateria Nova",
     descricao: "Troca de bateria original ou compatível premium.",
     preco: 180.0,
-    imagem:
-      "https://cdn-icons-png.flaticon.com/512/3103/3103446.png",
+    imagem: "https://cdn-icons-png.flaticon.com/512/3103/3103446.png",
   },
 ];
 
@@ -41,79 +39,147 @@ app.get("/", (req, res) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recupera Cell</title>
     <style>
+      :root {
+        --cor-fundo: #000;
+        --cor-card: #141414;
+        --cor-primaria: #ff6600;
+        --cor-secundaria: #222;
+        --cor-texto: #fff;
+        --cor-cinza: #aaa;
+      }
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", Arial, sans-serif;
         margin: 0;
-        background: #000;
-        color: #fff;
+        background: var(--cor-fundo);
+        color: var(--cor-texto);
       }
       header {
-        background: #111;
+        background: var(--cor-secundaria);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 20px;
+        padding: 12px 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        position: sticky;
+        top: 0;
+        z-index: 10;
       }
       .logo {
         display: flex;
         align-items: center;
         gap: 10px;
-        color: orange;
-        font-weight: bold;
+        font-weight: 700;
+        color: var(--cor-primaria);
+        font-size: 1.3em;
+        letter-spacing: 1px;
       }
       .logo img {
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
       }
-      main { padding: 20px; }
-      h2 { color: orange; }
+      .cart-icon {
+        font-size: 1.2em;
+        color: var(--cor-primaria);
+        background: #111;
+        border-radius: 8px;
+        padding: 5px 10px;
+      }
+      main {
+        padding: 30px 20px;
+        max-width: 1000px;
+        margin: auto;
+      }
+      h2 {
+        text-align: center;
+        color: var(--cor-primaria);
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-size: 1.8em;
+      }
       .produtos {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 25px;
       }
       .card {
-        background: #1a1a1a;
-        color: #fff;
-        border-radius: 8px;
-        padding: 15px;
+        background: var(--cor-card);
+        border: 2px solid transparent;
+        border-radius: 12px;
+        padding: 20px;
         text-align: center;
+        transition: all 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        border: 2px solid var(--cor-primaria);
+        box-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
       }
       .card img {
         width: 100px;
         height: 100px;
         object-fit: contain;
+        margin-bottom: 10px;
+      }
+      .card h3 {
+        color: var(--cor-primaria);
+        margin: 10px 0 5px;
+      }
+      .card p {
+        color: var(--cor-cinza);
+        font-size: 0.9em;
       }
       .card button {
-        background: orange;
-        color: black;
+        background: var(--cor-primaria);
+        color: #000;
         border: none;
         padding: 10px 15px;
-        border-radius: 5px;
+        border-radius: 6px;
         cursor: pointer;
         font-weight: bold;
+        margin-top: 10px;
+        transition: 0.3s;
+      }
+      .card button:hover {
+        background: #ff8533;
       }
       .cart {
-        background: #111;
-        color: #fff;
-        border-radius: 8px;
+        background: var(--cor-secundaria);
+        border-radius: 10px;
         padding: 20px;
-        margin-top: 30px;
+        margin-top: 40px;
+        box-shadow: 0 0 10px rgba(255,102,0,0.3);
+      }
+      .cart h3 {
+        color: var(--cor-primaria);
+        margin-bottom: 10px;
+      }
+      .cart ul {
+        list-style: none;
+        padding: 0;
+      }
+      .cart li {
+        border-bottom: 1px solid #333;
+        padding: 8px 0;
       }
       .cart button {
-        background: orange;
+        background: var(--cor-primaria);
         border: none;
-        padding: 10px 20px;
+        padding: 12px 20px;
         font-weight: bold;
         border-radius: 6px;
         cursor: pointer;
+        margin-top: 15px;
+        display: block;
+      }
+      .cart button:hover {
+        background: #ff8533;
       }
       footer {
         text-align: center;
-        color: gray;
-        padding: 15px;
-        background: #111;
-        margin-top: 40px;
+        color: var(--cor-cinza);
+        padding: 20px;
+        background: var(--cor-secundaria);
+        margin-top: 60px;
       }
     </style>
   </head>
@@ -123,7 +189,7 @@ app.get("/", (req, res) => {
         <img src="https://cdn-icons-png.flaticon.com/512/3209/3209043.png" alt="logo">
         Recupera Cell
       </div>
-      <div>🛒 <span id="cart-count">0</span></div>
+      <div class="cart-icon">🛒 <span id="cart-count">0</span></div>
     </header>
 
     <main>
@@ -131,14 +197,14 @@ app.get("/", (req, res) => {
       <div class="produtos" id="produtos"></div>
 
       <div class="cart" id="carrinho" style="display:none;">
-        <h3>Carrinho</h3>
+        <h3>🛍️ Carrinho</h3>
         <ul id="cart-list"></ul>
         <div id="pedido"></div>
-        <button onclick="finalizarPedido()">Finalizar</button>
+        <button onclick="finalizarPedido()">Finalizar Pedido</button>
       </div>
     </main>
 
-    <footer>© 2025 Recupera Cell — Manutenções & Assistência</footer>
+    <footer>© 2025 Recupera Cell — Manutenções & Assistência Técnica</footer>
 
     <script>
       let carrinho = [];
