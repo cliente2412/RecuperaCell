@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
@@ -6,92 +6,177 @@
   <title>Recupera Cell — Loja</title>
   <style>
     :root {
-      --bg:#000;
-      --accent:#ff7a00;
-      --card:#111;
-      --glass:rgba(255,255,255,0.03);
+      --bg: #000;
+      --accent: #ff7a00;
+      --card: #111;
     }
-    * { box-sizing:border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin:0;
-      font-family:Inter,-apple-system,Segoe UI,Roboto,Arial;
-      background:linear-gradient(180deg,var(--bg),#070707);
-      color:#fff;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg), #070707);
+      color: #fff;
     }
 
+    /* TOPO */
     .topbar {
-      display:flex;align-items:center;justify-content:space-between;
-      padding:14px 20px;
-      background:rgba(0,0,0,0.6);
-      border-bottom:1px solid rgba(255,255,255,.05);
-      position:sticky;top:0;z-index:10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(0,0,0,0.6);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky; top: 0; z-index: 10;
     }
-    .brand { display:flex;align-items:center;gap:10px; }
-    .logo { width:42px;height:42px;border-radius:8px;
-      background:linear-gradient(135deg,var(--accent),#ff4b00);
-      display:flex;align-items:center;justify-content:center;font-weight:700;color:#111;
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      width: 42px; height: 42px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), #ff4b00);
+      display: flex; align-items: center; justify-content: center;
+      color: #111; font-weight: 700;
     }
-    nav { display:flex;gap:8px;align-items:center; }
 
-    .container { max-width:1100px;margin:18px auto;padding:0 16px; }
-    .grid { display:grid;grid-template-columns:1fr 340px;gap:20px; }
+    nav button {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .container { max-width: 1000px; margin: 18px auto; padding: 0 16px; }
+    .grid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
 
     .products {
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
     }
 
     .card {
-      background:var(--card);
-      padding:14px;border-radius:10px;
-      border:1px solid rgba(255,255,255,0.06);
-      display:flex;gap:10px;align-items:center;
+      background: var(--card);
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
-    .thumb {width:80px;height:80px;border-radius:8px;background:#222;display:flex;align-items:center;justify-content:center;}
-    .btn {background:var(--accent);border:0;padding:8px 12px;border-radius:8px;color:#111;font-weight:700;cursor:pointer;}
-    .btn.ghost {background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff;}
+
+    .thumb {
+      width: 80px; height: 80px;
+      border-radius: 8px;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn {
+      background: var(--accent);
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #111;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
     .cart {
-      position:sticky;top:80px;
-      background:#0b0b0b;
-      padding:14px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.06);
+      position: sticky;
+      top: 80px;
+      background: #0b0b0b;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
     }
 
-    .cart h2 {margin-top:0;}
-    .cart-items {max-height:260px;overflow:auto;margin:8px 0;}
-    .cart-item {display:flex;justify-content:space-between;gap:8px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:8px;font-size:14px;}
-    .checkout label {display:block;font-size:13px;margin:8px 0 6px;color:#ddd;}
-    input,textarea {width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:#070707;color:#fff;}
+    .cart h2 { margin-top: 0; }
+    .cart-items {
+      max-height: 260px;
+      overflow: auto;
+      margin: 8px 0;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.02);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
 
-    footer {margin-top:24px;padding:12px;text-align:center;color:#aaa;font-size:14px;}
+    .checkout label {
+      display: block;
+      font-size: 13px;
+      margin: 8px 0 6px;
+      color: #ddd;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: #070707;
+      color: #fff;
+    }
 
-    /* RESPONSIVO MOBILE */
+    footer {
+      margin-top: 30px;
+      padding: 14px;
+      text-align: center;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* WHATSAPP FLOAT */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 58px;
+      height: 58px;
+      background: #25d366;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 99;
+      transition: transform 0.2s;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); }
+
+    /* MOBILE */
     @media (max-width:900px){
-      .grid { grid-template-columns:1fr; }
+      .grid { grid-template-columns: 1fr; }
       .cart {
-        position:fixed;
-        bottom:10px;left:50%;
-        transform:translateX(-50%);
-        width:80%;
-        max-width:380px;
-        font-size:14px;
-        padding:10px;
-        box-shadow:0 0 12px rgba(0,0,0,0.6);
-        z-index:50;
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 85%;
+        max-width: 380px;
+        font-size: 14px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.6);
+        z-index: 50;
       }
-      .cart h2 {font-size:16px;margin-bottom:6px;}
-      .btn {padding:8px 10px;font-size:13px;}
-      input,textarea {font-size:13px;}
+      .cart h2 { font-size: 16px; margin-bottom: 6px; }
+      .btn { padding: 8px 10px; font-size: 13px; }
+      input, textarea { font-size: 13px; }
     }
 
     @media (max-width:420px){
-      .cart {width:90%;max-width:320px;padding:8px;}
-      .btn {font-size:12px;padding:6px 8px;}
-      input,textarea {font-size:12px;}
-      .cart h2 {font-size:15px;}
+      .cart { width: 90%; max-width: 320px; padding: 8px; }
+      .btn { font-size: 12px; padding: 6px 8px; }
+      input, textarea { font-size: 12px; }
+      .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 15px; right: 15px; }
     }
   </style>
 </head>
@@ -100,13 +185,11 @@
     <div class="brand">
       <div class="logo">RC</div>
       <div>
-        <h1 style="font-size:18px;margin:0;">Recupera Cell</h1>
+        <h1 style="font-size:18px;">Recupera Cell</h1>
         <small style="color:#bbb;">Manutenção & Acessórios</small>
       </div>
     </div>
-    <nav>
-      <button class="btn ghost" id="open-cart">🛒 Carrinho</button>
-    </nav>
+    <nav><button id="open-cart">🛒 Carrinho</button></nav>
   </header>
 
   <main class="container">
@@ -135,6 +218,9 @@
       Desenvolvedor: <b>Eliseu Tach Manutenção</b> — Recupera Cell © <span id="year"></span>
     </footer>
   </main>
+
+  <!-- ÍCONE WHATSAPP -->
+  <div class="whatsapp-float" id="whatsapp-float" title="Falar no WhatsApp">💬</div>
 
   <script>
     const WHATSAPP_NUMBER = '5524988421242';
@@ -201,6 +287,11 @@
       if(phone) msg+=`📞 ${encodeURIComponent(phone)}%0A`;
       if(obs) msg+=`📝 ${encodeURIComponent(obs)}%0A`;
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,'_blank');
+    };
+
+    // Botão flutuante WhatsApp
+    document.getElementById('whatsapp-float').onclick=()=>{
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}`,'_blank');
     };
 
     document.getElementById('year').textContent=new Date().getFullYear();
