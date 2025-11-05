@@ -2,297 +2,387 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Recupera Cell — Loja</title>
+  <meta name="description" content="Recupera Cell - Manutenção e acessórios. Simule pedidos e abra no WhatsApp." />
   <style>
-    :root {
-      --bg: #000;
-      --accent: #ff7a00;
-      --card: #111;
+    :root{
+      --bg:#000;
+      --panel:#0b0b0b;
+      --card:#111;
+      --accent:#ff7a00;
+      --muted:#999;
+      --glass: rgba(255,255,255,0.03);
+      --radius:12px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Inter, Arial, sans-serif;
-      background: linear-gradient(180deg, var(--bg), #070707);
-      color: #fff;
-    }
-
-    /* TOPO */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px;
-      background: rgba(0,0,0,0.6);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      position: sticky; top: 0; z-index: 10;
-    }
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .logo {
-      width: 42px; height: 42px; border-radius: 8px;
-      background: linear-gradient(135deg, var(--accent), #ff4b00);
-      display: flex; align-items: center; justify-content: center;
-      color: #111; font-weight: 700;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter,system-ui,Roboto,Arial,sans-serif;
+      background: linear-gradient(180deg,var(--bg),#070707);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.35;
     }
 
-    nav button {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #fff;
-      border-radius: 6px;
-      padding: 8px 12px;
-      cursor: pointer;
+    /* Top */
+    header.topbar{
+      position:sticky; top:0; z-index:60;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:12px 16px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.2));
+      border-bottom:1px solid rgba(255,255,255,0.03);
     }
-
-    .container { max-width: 550px; margin: 18px auto; padding: 0 16px; }
-    .grid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:46px;height:46px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),#ff4b00);
+      display:flex;align-items:center;justify-content:center;color:#111;font-weight:800;font-size:18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
+    .brand h1{margin:0;font-size:18px}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
 
-    .card {
-      background: var(--card);
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.05);
-      gap: 10px;
-      
-    }
+    nav.topnav{display:flex;gap:8px;align-items:center}
+    button.icon-btn{background:transparent;border:0;color:inherit;padding:8px;border-radius:8px;cursor:pointer}
+    button.primary{background:var(--accent);color:#111;border:0;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.05);padding:8px 10px;border-radius:8px;color:#fff}
 
-    .thumb {
-      width: 80px; height: 80px;
-      border-radius: 8px;
-      background: #222;
+    /* Layout */
+    .container{max-width:1100px;margin:18px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
 
-      
+    /* Product cards */
+    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .prod{
+      background:linear-gradient(180deg,var(--card),#0b0b0b);
+      border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.03);
+      display:flex;gap:12px;align-items:center;
     }
+    .prod .thumb{width:84px;height:84px;border-radius:10px;background:linear-gradient(135deg,#222,#111);display:flex;align-items:center;justify-content:center;font-size:28px}
+    .prod h3{margin:0;font-size:15px}
+    .prod .price{color:var(--accent);font-weight:800;margin-top:6px}
+    .prod .meta{flex:1}
+    .prod .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 
-    .btn {
-      background: var(--accent);
-      border: 0;
-      padding: 8px 12px;
-      border-radius: 8px;
-      color: #111;
-      font-weight: 700;
-      cursor: pointer;
+    /* Cart panel */
+    .cart{
+      background:var(--panel);border-radius:var(--radius);padding:14px;border:1px solid rgba(255,255,255,0.03);
+      position:sticky;top:84px;
     }
+    .cart h2{margin:0 0 8px 0;font-size:18px}
+    .cart-items{max-height:320px;overflow:auto;margin-bottom:8px}
+    .cart-item{display:flex;justify-content:space-between;gap:8px;padding:8px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);margin-bottom:8px;font-size:14px}
+    .cart-item small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+    .cart .tot{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-weight:800;color:var(--accent)}
 
-    .cart {
-      position: sticky;
-      top: 200px;
-      background: #0b0b0b;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
+    .checkout{margin-top:10px}
+    label{display:block;font-size:13px;color:#ddd;margin:8px 0 6px}
+    input,textarea,select{
+      width:100%;padding:10px;border-radius:8px;background:#070707;border:1px solid rgba(255,255,255,0.04);color:#fff;font-size:14px;
     }
+    .hint{font-size:12px;color:var(--muted);margin-top:6px}
 
-    .cart h2 { margin-top: 0; }
-    .cart-items {
-      max-height: 490px;
-  
-      margin: 8px 0;
-    }
-    .cart-item {
-      
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.02);
-      margin-bottom: 8px;
-      font-size: 10px;
-    }
+    footer{margin-top:26px;padding:16px;text-align:center;color:#aaa;font-size:13px}
 
-    .checkout label {
-      
-      font-size: 13px;
-      margin: 8px 0 6px;
-      color: #ddd;
+    /* Floating WhatsApp */
+    .whatsapp-float{
+      position:fixed; right:16px; bottom:16px; width:60px; height:60px; border-radius:50%;
+      background:#25D366; display:flex; align-items:center; justify-content:center; color:#fff; z-index:200;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45); cursor:pointer; transition:transform .15s;
     }
-    input, textarea {
-      width: 100px;
-      padding: 14px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: #070707;
-      color: #fff;
-    }
+    .whatsapp-float:hover{transform:scale(1.06)}
 
-    footer {
-      margin-top: 29px;
-      padding: 10px;
-      text-align: center;
-      color: #aaa;
-      font-size: 14px;
-    }
-
-    /* WHATSAPP FLOAT */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 58px;
-      height: 38px;
-      background: #25d366;
-      color: #fff;
-      border-radius: 50px;
-      display: flex;
-      font-size: 28px;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      z-index: 99;
-      transition: transform 0.2s;
-    }
-    .whatsapp-float:hover { transform: scale(1.1); }
-
-    /* MOBILE */
+    /* Responsive tweaks (mobile) */
     @media (max-width:900px){
-      .grid { grid-template-columns: 1fr; }
-      .cart {
-        position: fixed;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 85%;
-        max-width: 380px;
-        font-size: 14px;
-        padding: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.6);
-        z-index: 50;
+      .grid{grid-template-columns:1fr}
+      .cart{
+        position:fixed; left:50%; transform:translateX(-50%); bottom:12px;
+        width:86%; max-width:360px; padding:10px; z-index:120;
+        box-shadow:0 10px 30px rgba(0,0,0,0.6);
+        font-size:14px;
       }
-      .cart h2 { font-size: 16px; margin-bottom: 6px; }
-      .btn { padding: 8px 10px; font-size: 13px; }
-      input, textarea { font-size: 13px; }
+      .container{padding-bottom:120px} /* avoid overlap with fixed cart */
+      .products{gap:12px}
+      .prod{padding:10px}
+      .prod .thumb{width:72px;height:72px}
+      .cart-items{max-height:160px}
+      input,textarea{font-size:13px}
+      .whatsapp-float{right:14px;bottom:86px;width:54px;height:54px}
     }
 
     @media (max-width:420px){
-      .cart { width: 90%; max-width: 320px; padding: 8px; }
-      .btn { font-size: 12px; padding: 6px 8px; }
-      input, textarea { font-size: 12px; }
-      .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 15px; right: 15px; }
+      .cart{width:92%;max-width:320px; padding:8px}
+      .prod .thumb{width:64px;height:64px;font-size:22px}
+      .whatsapp-float{width:50px;height:50px;font-size:18px;right:12px;bottom:86px}
     }
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .center{display:flex;align-items:center;gap:8px}
+    .qty-controls{display:inline-flex;gap:6px;align-items:center}
+    .small-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px;border-radius:8px;color:#fff;cursor:pointer}
   </style>
 </head>
 <body>
-  <header class="topbar">
+  <header class="topbar" role="banner">
     <div class="brand">
-      <div class="logo">RC</div>
+      <div class="logo" aria-hidden>RC</div>
       <div>
-        <h1 style="font-size:18px;">Recupera Cell</h1>
-        <small style="color:#bbb;">Manutenção & Acessórios</small>
+        <h1>Recupera Cell</h1>
+        <p>Manutenção &amp; Acessórios</p>
       </div>
     </div>
-    <nav><button id="open-cart">🛒 Carrinho</button></nav>
+
+    <nav class="topnav" aria-label="Navegação principal">
+      <button id="btn-cats" class="icon-btn" title="Categorias">Categorias ▾</button>
+      <button id="open-cart" class="ghost" title="Abrir carrinho">🛒 <span id="cart-count">0</span></button>
+    </nav>
   </header>
 
-  <main class="container">
+  <main class="container" role="main">
     <div class="grid">
-      <section>
-        <h2>Produtos</h2>
-        <div id="products" class="products"></div>
+      <!-- Produtos -->
+      <section aria-labelledby="prod-title">
+        <h2 id="prod-title">Produtos</h2>
+        <div id="products" class="products" aria-live="polite"></div>
       </section>
 
-      <aside class="cart" id="cart-panel">
-        <h2>Seu Carrinho</h2>
-        <div class="cart-items" id="cart-items"></div>
+      <!-- Carrinho -->
+      <aside id="cart-panel" class="cart" aria-labelledby="cart-title">
+        <h2 id="cart-title">Seu Carrinho</h2>
+        <div id="cart-items" class="cart-items" role="status" aria-live="polite"></div>
+
+        <div class="tot">
+          <div class="muted">Total</div>
+          <div id="cart-total">R$ 0,00</div>
+        </div>
+
         <div class="checkout">
           <label for="phone">Número (WhatsApp)</label>
-          <input id="phone" placeholder="(55)24988421242" />
+          <input id="phone" type="tel" inputmode="tel" placeholder="Ex: 5524999887766" />
+
           <label for="obs">Observações</label>
-          <textarea id="obs" rows="2" placeholder="Ex: modelo, horário..."></textarea>
-          <button class="btn" id="place-order" style="width:100%;margin-top:10px;">
-            Simular Pedido / WhatsApp
-          </button>
+          <textarea id="obs" rows="2" placeholder="Ex: Modelo, melhor horário para contato"></textarea>
+
+          <button id="place-order" class="primary" style="width:100%;margin-top:10px">Simular Pedido / WhatsApp</button>
+          <div class="hint">O pedido abrirá no WhatsApp com o resumo — sem servidor.</div>
         </div>
       </aside>
     </div>
 
     <footer>
-      Desenvolvedor: <b>Eliseu Tach Manutenção</b> — Recupera Cell © <span id="year"></span>
+      Desenvolvedor: <strong>Eliseu Tach Manutenção</strong> — Recupera Cell © <span id="year"></span>
     </footer>
   </main>
 
-  <!-- ÍCONE WHATSAPP -->
-  <div class="whatsapp-float" id="whatsapp-float" title="Falar no WhatsApp">💬</div>
+  <!-- WhatsApp flutuante (SVG) -->
+  <div class="whatsapp-float" id="whatsapp-float" role="button" aria-label="Abrir WhatsApp">
+    <!-- SVG do ícone WhatsApp (inline, sem depender de CDN) -->
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20.52 3.478A11.93 11.93 0 0012 0C5.373 0 .001 5.373.001 12c0 2.117.559 4.193 1.62 6.01L0 24l6.182-1.616A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12 0-3.204-1.25-6.208-3.48-8.522z" fill="#25D366"/>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.672.149-.198.297-.768.967-.942 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.786-1.48-1.754-1.653-2.051-.173-.297-.018-.458.13-.606.134-.133.298-.347.447-.52.149-.173.198-.297.298-.495.099-.198 0-.371-.05-.52-.05-.149-.672-1.611-.921-2.205-.243-.579-.49-.5-.672-.51l-.573-.01c-.198 0-.52.074-.793.371s-1.04 1.016-1.04 2.479c0 1.461 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487 1.415.611 2.518.977 3.385 1.249 1.422.45 2.718.387 3.744.235.114-.04 1.758-.717 2.01-1.408.252-.69.252-1.283.177-1.408-.074-.124-.272-.198-.57-.347z" fill="#fff"/>
+    </svg>
+  </div>
 
   <script>
+    /* ========== CONFIG ========== */
+    // Substitua pelo seu número (sem +) no formato: 55 + DDD + número (ex: 5524999887766)
     const WHATSAPP_NUMBER = '5524988421242';
+
+    // Produtos iniciais (edite como quiser)
     const PRODUCTS = [
-      {id:1,name:'Troca de Tela iPhone 11',price:249.00},
-      {id:2,name:'Bateria iPhone XR',price:129.00},
-      {id:3,name:'Capinha Silicone',price:39.90},
-      {id:4,name:'Película 3D',price:29.90},
+      { id: 1, name: 'Troca de Tela iPhone 11', price: 249.00, cat: 'Tela' },
+      { id: 2, name: 'Bateria iPhone XR', price: 129.00, cat: 'Bateria' },
+      { id: 3, name: 'Conector USB-C', price: 79.90, cat: 'Conector' },
+      { id: 4, name: 'Reparo Placa Lógica', price: 399.00, cat: 'Placa' },
+      { id: 5, name: 'Película Temperada', price: 29.90, cat: 'Acessórios' },
+      { id: 6, name: 'Capinha Silicone', price: 39.90, cat: 'Acessórios' }
     ];
 
+    /* ========== HELPERS ========== */
     const money = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-    let CART = JSON.parse(localStorage.getItem('rc_cart')||'{}');
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-    function save(){localStorage.setItem('rc_cart',JSON.stringify(CART));renderCart();}
+    /* ========== STATE (localStorage) ========== */
+    let CART = JSON.parse(localStorage.getItem('rc_cart') || '{}');
 
+    function saveCart(){ localStorage.setItem('rc_cart', JSON.stringify(CART)); renderCart(); }
+
+    /* ========== RENDER PRODUTOS ========== */
     function renderProducts(){
-      const wrap=document.getElementById('products');wrap.innerHTML='';
+      const wrap = $('#products');
+      wrap.innerHTML = '';
       for(const p of PRODUCTS){
-        const el=document.createElement('article');
-        el.className='card';
-        el.innerHTML=`<div class="thumb">📱</div>
-          <div style="flex:1">
-            <h3 style="margin:0;font-size:15px">${p.name}</h3>
-            <div style="color:var(--accent);font-weight:700">${money(p.price)}</div>
-            <button class="btn" data-id="${p.id}">Adicionar</button>
-          </div>`;
-        wrap.appendChild(el);
+        const card = document.createElement('article');
+        card.className = 'prod';
+        card.innerHTML = `
+          <div class="thumb" aria-hidden>📱</div>
+          <div class="meta">
+            <h3>${p.name}</h3>
+            <div class="price">${money(p.price)}</div>
+            <div class="actions">
+              <button class="btn add-btn" data-id="${p.id}">Adicionar</button>
+              <button class="small-btn" data-id="${p.id}" aria-label="Detalhes">Detalhes</button>
+            </div>
+          </div>
+        `;
+        wrap.appendChild(card);
       }
-      wrap.querySelectorAll('.btn').forEach(b=>b.onclick=()=>addToCart(Number(b.dataset.id)));
+      $$('.add-btn').forEach(b => b.addEventListener('click', e => addToCart(Number(e.currentTarget.dataset.id))));
+      $$('.small-btn').forEach(b => b.addEventListener('click', e => {
+        const id = Number(e.currentTarget.dataset.id);
+        const p = PRODUCTS.find(x => x.id === id);
+        alert(`${p.name}\nPreço: ${money(p.price)}`);
+      }));
     }
 
+    /* ========== CART ACTIONS ========== */
     function addToCart(id){
-      const p=PRODUCTS.find(x=>x.id===id);
+      const p = PRODUCTS.find(x => x.id === id);
       if(!p) return;
-      if(!CART[id]) CART[id]={...p,qty:0};
-      CART[id].qty++; save();
+      if(!CART[id]) CART[id] = {...p, qty: 0};
+      CART[id].qty += 1;
+      saveCart();
+      flashCount();
+    }
+    function changeQty(id, delta){
+      if(!CART[id]) return;
+      CART[id].qty += delta;
+      if(CART[id].qty <= 0) delete CART[id];
+      saveCart();
+    }
+    function removeItem(id){
+      if(CART[id]) { delete CART[id]; saveCart(); }
     }
 
     function renderCart(){
-      const wrap=document.getElementById('cart-items');
-      wrap.innerHTML='';
-      let total=0;
-      for(const it of Object.values(CART)){
-        total+=it.price*it.qty;
-        wrap.innerHTML+=`
-        <div class="cart-item">
-          <div>${it.name} (${it.qty}x)</div>
-          <div><b>${money(it.price*it.qty)}</b></div>
-        </div>`;
+      const wrap = $('#cart-items');
+      wrap.innerHTML = '';
+      const keys = Object.keys(CART);
+      let total = 0, count = 0;
+      if(keys.length === 0){
+        wrap.innerHTML = '<div class="muted">Carrinho vazio</div>';
+      } else {
+        for(const k of keys){
+          const it = CART[k];
+          total += it.price * it.qty;
+          count += it.qty;
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <div>
+              <div style="font-weight:700">${it.name}</div>
+              <small>${money(it.price)} cada</small>
+            </div>
+            <div style="text-align:right">
+              <div class="qty-controls">
+                <button class="small-btn" data-op="dec" data-id="${k}">-</button>
+                <span style="min-width:28px;display:inline-block;text-align:center">${it.qty}</span>
+                <button class="small-btn" data-op="inc" data-id="${k}">+</button>
+              </div>
+              <div style="margin-top:6px;font-weight:700">${money(it.price * it.qty)}</div>
+              <div style="margin-top:6px"><button class="small-btn" data-op="del" data-id="${k}">Remover</button></div>
+            </div>
+          `;
+          wrap.appendChild(div);
+        }
       }
-      if(Object.keys(CART).length===0)
-        wrap.innerHTML='<div style="color:#888;font-size:13px;">Carrinho vazio</div>';
+      $('#cart-total').textContent = money(total);
+      $('#cart-count').textContent = count;
+
+      // attach events
+      $$('.small-btn[data-op]').forEach(btn => {
+        btn.onclick = e => {
+          const op = e.currentTarget.dataset.op;
+          const id = Number(e.currentTarget.dataset.id);
+          if(op === 'inc') changeQty(id, 1);
+          if(op === 'dec') changeQty(id, -1);
+          if(op === 'del') removeItem(id);
+        };
+      });
     }
 
-    document.getElementById('place-order').onclick=()=>{
-      if(Object.keys(CART).length===0){alert('Carrinho vazio!');return;}
-      const phone=document.getElementById('phone').value.trim();
-      const obs=document.getElementById('obs').value.trim();
-      const total=Object.values(CART).reduce((s,i)=>s+i.price*i.qty,0);
-      let msg='*Pedido Recupera Cell*%0A';
-      for(const i of Object.values(CART))
-        msg+=`• ${i.name} (${i.qty}x ${money(i.price)})%0A`;
-      msg+=`%0A*Total:* ${money(total)}%0A`;
-      if(phone) msg+=`📞 ${encodeURIComponent(phone)}%0A`;
-      if(obs) msg+=`📝 ${encodeURIComponent(obs)}%0A`;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,'_blank');
-    };
+    function flashCount(){
+      const el = $('#cart-count');
+      if(!el) return;
+      el.animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:260});
+    }
 
-    // Botão flutuante WhatsApp
-    document.getElementById('whatsapp-float').onclick=()=>{
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}`,'_blank');
-    };
+    /* ========== PLACE ORDER -> WHATSAPP ========== */
+    function placeOrder(){
+      if(Object.keys(CART).length === 0){ alert('Seu carrinho está vazio.'); return; }
+      const phoneField = $('#phone').value.trim();
+      const obs = $('#obs').value.trim();
+      const total = Object.values(CART).reduce((s,i)=>s+i.price*i.qty,0);
 
-    document.getElementById('year').textContent=new Date().getFullYear();
-    renderProducts(); renderCart();
-    document.getElementById('open-cart').onclick=()=>document.getElementById('cart-panel').scrollIntoView({behavior:'smooth'});
+      // build message (URL encoded)
+      let msgLines = [];
+      msgLines.push('*Pedido — Recupera Cell*');
+      msgLines.push('');
+      for(const it of Object.values(CART)){
+        msgLines.push(`• ${it.name} — ${it.qty}x (${money(it.price)})`);
+      }
+      msgLines.push('');
+      msgLines.push(`*Total:* ${money(total)}`);
+      if(phoneField) msgLines.push(`*Contato:* ${phoneField}`);
+      if(obs) msgLines.push(`*Obs:* ${obs}`);
+
+      const message = encodeURIComponent(msgLines.join('\n'));
+      const waNumber = WHATSAPP_NUMBER.replace(/\D/g,'');
+      const url = `https://wa.me/${waNumber}?text=${message}`;
+
+      // open WhatsApp (web or app)
+      window.open(url, '_blank');
+
+      // Optionally: save order snapshot locally
+      const orders = JSON.parse(localStorage.getItem('rc_orders') || '[]');
+      orders.push({ id: 'PED-'+Date.now(), items: CART, phone: phoneField, obs, total, date: new Date().toISOString()});
+      localStorage.setItem('rc_orders', JSON.stringify(orders));
+
+      // clear cart
+      CART = {};
+      saveCart();
+      $('#phone').value = '';
+      $('#obs').value = '';
+    }
+
+    /* ========== INIT UI HOOKS ========== */
+    document.getElementById('place-order').addEventListener('click', placeOrder);
+    document.getElementById('whatsapp-float').addEventListener ? null : null; // placeholder for some parsers
+
+    // Floating whatsapp open (works on desktop and mobile)
+    document.getElementById('whatsapp-float').onclick = () => {
+      const waNumber = WHATSAPP_NUMBER.replace(/\D/g,'');
+      window.open(`https://wa.me/${waNumber}`, '_blank');
+    };
+    // compatibility: also allow clicking SVG container
+    document.querySelector('.whatsapp-float').addEventListener('click', () => {
+      const waNumber = WHATSAPP_NUMBER.replace(/\D/g,'');
+      window.open(`https://wa.me/${waNumber}`, '_blank');
+    });
+
+    // cart open button scroll
+    $('#open-cart').addEventListener('click', () => {
+      document.getElementById('cart-panel').scrollIntoView({behavior:'smooth', block:'center'});
+      // if mobile fixed, focus phone input so user sees checkout
+      if(window.innerWidth <= 900) $('#phone').focus();
+    });
+
+    // init
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderProducts();
+    renderCart();
+
+    // small accessible support: enable keyboard enter for add buttons
+    document.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter' && document.activeElement && document.activeElement.matches('.add-btn')) {
+        document.activeElement.click();
+      }
+    });
   </script>
 </body>
 </html>
