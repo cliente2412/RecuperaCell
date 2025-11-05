@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Recupera Cell — Loja</title>
   <style>
     :root {
@@ -10,281 +10,284 @@
       --accent: #ff7a00;
       --card: #111;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, var(--bg), #070707);
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
       color: #fff;
-      padding: 12px;
     }
 
-    /* PRODUTOS */
+    h1, h2, h3, p { margin: 0; }
+
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 14px;
+    }
+
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-bottom: 180px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
     }
 
     .card {
       background: var(--card);
+      border-radius: 12px;
       padding: 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.05);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .thumb {
-      width: 90px; height: 90px;
+      background: linear-gradient(135deg, #222, #111);
+      height: 100px;
       border-radius: 8px;
-      background: #222;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       font-size: 32px;
-      color: var(--accent);
+      margin-bottom: 10px;
     }
+
+    .price { color: var(--accent); font-weight: bold; }
+    .installments { color: #bbb; font-size: 13px; margin-top: 4px; }
 
     .btn {
       background: var(--accent);
       border: none;
+      color: #111;
       padding: 8px 12px;
       border-radius: 8px;
-      color: #111;
-      font-weight: 700;
+      font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
-      transition: 0.2s;
+      margin-top: 8px;
+      width: 100%;
     }
-    .btn:hover { background: #ffa533; }
 
     /* CARRINHO */
     .cart {
       position: fixed;
+      right: 10px;
       bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
       width: 90%;
       max-width: 380px;
       background: #0b0b0b;
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 12px;
-      padding: 10px;
+      padding: 14px;
       z-index: 50;
-      box-shadow: 0 0 10px rgba(0,0,0,0.6);
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease;
     }
 
     .cart.minimized {
-      height: 48px;
-      overflow: hidden;
-      padding: 6px 10px;
-      cursor: pointer;
-      text-align: center;
+      transform: translateY(calc(100% - 46px));
     }
 
-    .cart.minimized h2 {
-      margin: 0;
-      font-size: 15px;
-      color: var(--accent);
-    }
-
-    .cart h2 { font-size: 16px; margin-bottom: 6px; }
-
-    .cart-items {
-      max-height: 160px;
-      overflow-y: auto;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    .cart-item {
+    .cart-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .remove {
-      background: none;
-      border: none;
-      color: #ff4444;
-      font-weight: bold;
       cursor: pointer;
-      font-size: 14px;
     }
 
-    input, textarea {
-      width: 100%;
+    .cart-items {
+      margin-top: 10px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      background: rgba(255,255,255,0.02);
       padding: 8px;
       border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: #070707;
-      color: #fff;
-      font-size: 13px;
+      margin-bottom: 8px;
     }
 
-    .checkout label {
-      font-size: 13px;
-      margin: 6px 0 4px;
-      color: #ddd;
-      display: block;
+    .cart-item div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-item .remove {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .checkout { margin-top: 10px; }
+    .checkout input, .checkout textarea {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      background: #070707;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      border-radius: 8px;
     }
 
     footer {
       text-align: center;
+      color: #999;
+      font-size: 13px;
       margin-top: 30px;
-      color: #aaa;
-      font-size: 14px;
+      padding: 10px;
     }
 
-    /* WHATSAPP FLOAT */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 55px;
-      height: 55px;
-      background: #25d366;
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      z-index: 99;
+    @media (max-width: 500px) {
+      .cart { width: 94%; }
     }
-    .whatsapp-float:hover { transform: scale(1.08); }
   </style>
 </head>
 <body>
-  <main>
-    <h1 style="text-align:center;color:var(--accent);margin-bottom:16px;">Recupera Cell</h1>
-    <p style="text-align:center;color:#bbb;margin-bottom:20px;">Manutenção & Acessórios</p>
+  <main class="container">
+    <h1>Recupera Cell</h1>
+    <p style="color:#bbb;margin-bottom:20px;">Manutenção & Acessórios</p>
 
     <section class="products" id="products"></section>
-
-    <!-- CARD SIMULADOR DE PEDIDO -->
-    <aside class="cart" id="cart-panel">
-      <h2 id="cart-header">🛒 Seu Carrinho (toque para minimizar)</h2>
-      <div class="cart-items" id="cart-items"></div>
-
-      <div class="checkout">
-        <label for="phone">Número (WhatsApp)</label>
-        <input id="phone" placeholder="(55)24988421242" />
-        <label for="obs">Observações</label>
-        <textarea id="obs" rows="2" placeholder="Ex: modelo, horário..."></textarea>
-        <button class="btn" id="place-order" style="width:100%;margin-top:8px;">Simular Pedido / WhatsApp</button>
-      </div>
-    </aside>
-
-    <footer>
-      Desenvolvido por <b>Eliseu Tach Manutenção</b> — Recupera Cell © <span id="year"></span>
-    </footer>
   </main>
 
-  <div class="whatsapp-float" id="whatsapp-float" title="Falar no WhatsApp">💬</div>
+  <aside class="cart minimized" id="cart">
+    <div class="cart-header" id="cart-toggle">
+      <h2>🛒 Carrinho</h2>
+      <button id="toggle-btn" style="background:none;border:0;color:#fff;">▲</button>
+    </div>
+
+    <div class="cart-content" id="cart-content">
+      <div class="cart-items" id="cart-items"></div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;">
+        <strong>Total:</strong> <span id="cart-total">R$ 0,00</span>
+      </div>
+      <div class="installments" id="cart-installments"></div>
+
+      <div class="checkout">
+        <label for="phone">Telefone/WhatsApp:</label>
+        <input id="phone" placeholder="(55) 24 98842-1242" />
+        <label for="obs">Observações:</label>
+        <textarea id="obs" rows="2" placeholder="Ex: Modelo do aparelho"></textarea>
+        <button class="btn" id="place-order">Simular Pedido / WhatsApp</button>
+      </div>
+    </div>
+  </aside>
+
+  <footer>Recupera Cell © <span id="year"></span> — Desenvolvido por Eliseu Tach</footer>
 
   <script>
     const WHATSAPP_NUMBER = '5524988421242';
+    const JUROS_MENSAL = 0.03; // 3% ao mês
+    const MAX_PARCELAS = 12;
+
     const PRODUCTS = [
-      {id:1,name:'Troca de Tela iPhone 11',price:249.00},
-      {id:2,name:'Bateria iPhone XR',price:129.00},
-      {id:3,name:'Capinha Silicone',price:39.90},
-      {id:4,name:'Película 3D',price:29.90},
-      {id:5,name:'Reparo de Placa',price:399.00},
+      {id:1, name:'Troca de Tela iPhone 11', price:249.00},
+      {id:2, name:'Bateria iPhone XR', price:129.00},
+      {id:3, name:'Conector de Carga USB-C', price:79.90},
+      {id:4, name:'Reparo de Placa Lógica', price:399.00},
+      {id:5, name:'Película Temperada', price:29.90},
+      {id:6, name:'Capinha Silicone', price:39.90}
     ];
 
     const money = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
     let CART = JSON.parse(localStorage.getItem('rc_cart')||'{}');
-    const cartPanel = document.getElementById('cart-panel');
-    const cartHeader = document.getElementById('cart-header');
+    const save = ()=>localStorage.setItem('rc_cart',JSON.stringify(CART));
 
-    function save(){localStorage.setItem('rc_cart',JSON.stringify(CART));renderCart();}
+    function calcParcelado(valor, parcelas, juros){
+      // fórmula: valor * ((1 + juros)^parcelas * juros) / ((1 + juros)^parcelas - 1)
+      const v = valor * ((Math.pow(1 + juros, parcelas) * juros) / (Math.pow(1 + juros, parcelas) - 1));
+      return v;
+    }
 
     function renderProducts(){
-      const wrap=document.getElementById('products');wrap.innerHTML='';
+      const wrap=document.getElementById('products');
+      wrap.innerHTML='';
       for(const p of PRODUCTS){
-        const el=document.createElement('article');
-        el.className='card';
-        el.innerHTML=`
+        const parcela = calcParcelado(p.price, MAX_PARCELAS, JUROS_MENSAL);
+        const div=document.createElement('div');
+        div.className='card';
+        div.innerHTML = `
           <div class="thumb">📱</div>
-          <h3 style="margin:8px 0;">${p.name}</h3>
-          <div style="color:var(--accent);font-weight:700">${money(p.price)}</div>
-          <button class="btn" data-id="${p.id}">Adicionar</button>`;
-        wrap.appendChild(el);
+          <h3>${p.name}</h3>
+          <div class="price">${money(p.price)}</div>
+          <div class="installments">ou ${MAX_PARCELAS}x de ${money(parcela)} com juros</div>
+          <button class="btn" data-id="${p.id}">Adicionar</button>
+        `;
+        wrap.appendChild(div);
       }
-      wrap.querySelectorAll('.btn').forEach(b=>b.onclick=()=>addToCart(Number(b.dataset.id)));
+      wrap.querySelectorAll('.btn').forEach(b => 
+        b.addEventListener('click', e => addToCart(Number(e.target.dataset.id)))
+      );
     }
 
     function addToCart(id){
-      const p=PRODUCTS.find(x=>x.id===id);
-      if(!p) return;
+      const p = PRODUCTS.find(x => x.id===id);
       if(!CART[id]) CART[id]={...p,qty:0};
-      CART[id].qty++; save();
+      CART[id].qty++;
+      save();
+      renderCart();
     }
 
     function removeFromCart(id){
-      if(CART[id]){
-        CART[id].qty--;
-        if(CART[id].qty<=0) delete CART[id];
-        save();
-      }
+      delete CART[id];
+      save();
+      renderCart();
     }
 
     function renderCart(){
       const wrap=document.getElementById('cart-items');
       wrap.innerHTML='';
+      const items=Object.values(CART);
       let total=0;
-      for(const it of Object.values(CART)){
+      for(const it of items){
         total+=it.price*it.qty;
-        wrap.innerHTML+=`
-        <div class="cart-item">
-          <div>${it.name} (${it.qty}x)</div>
-          <div>
-            <b>${money(it.price*it.qty)}</b>
-            <button class="remove" onclick="removeFromCart(${it.id})">✖</button>
-          </div>
-        </div>`;
+        const div=document.createElement('div');
+        div.className='cart-item';
+        div.innerHTML=`
+          <div><strong>${it.name}</strong> <button class="remove" data-id="${it.id}">Remover</button></div>
+          <div><span>${it.qty}x ${money(it.price)}</span> <strong>${money(it.price*it.qty)}</strong></div>
+        `;
+        wrap.appendChild(div);
       }
-      if(Object.keys(CART).length===0)
-        wrap.innerHTML='<div style="color:#888;font-size:13px;">Carrinho vazio</div>';
-      wrap.innerHTML+=`<div style="text-align:right;font-weight:700;margin-top:4px;color:var(--accent)">Total: ${money(total)}</div>`;
+      document.getElementById('cart-total').textContent=money(total);
+      if(total>0){
+        const parcela = calcParcelado(total, MAX_PARCELAS, JUROS_MENSAL);
+        document.getElementById('cart-installments').textContent = 
+          `ou ${MAX_PARCELAS}x de ${money(parcela)} com juros (3% a.m.)`;
+      } else {
+        document.getElementById('cart-installments').textContent = '';
+      }
+      wrap.querySelectorAll('.remove').forEach(b=>b.onclick=()=>removeFromCart(b.dataset.id));
     }
 
     document.getElementById('place-order').onclick=()=>{
-      if(Object.keys(CART).length===0){alert('Carrinho vazio!');return;}
+      if(Object.keys(CART).length===0){alert('Carrinho vazio');return;}
       const phone=document.getElementById('phone').value.trim();
       const obs=document.getElementById('obs').value.trim();
-      const total=Object.values(CART).reduce((s,i)=>s+i.price*i.qty,0);
       let msg='*Pedido Recupera Cell*%0A';
-      for(const i of Object.values(CART))
+      let total=0;
+      for(const i of Object.values(CART)){
+        total+=i.price*i.qty;
         msg+=`• ${i.name} (${i.qty}x ${money(i.price)})%0A`;
-      msg+=`%0A*Total:* ${money(total)}%0A`;
-      if(phone) msg+=`📞 ${encodeURIComponent(phone)}%0A`;
-      if(obs) msg+=`📝 ${encodeURIComponent(obs)}%0A`;
+      }
+      const parcela = calcParcelado(total, MAX_PARCELAS, JUROS_MENSAL);
+      msg+=`%0A*Total:* ${money(total)}%0Aou ${MAX_PARCELAS}x de ${money(parcela)} com juros (3% a.m.)%0A`;
+      if(phone) msg+=`*Contato:* ${encodeURIComponent(phone)}%0A`;
+      if(obs) msg+=`*Obs:* ${encodeURIComponent(obs)}%0A`;
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,'_blank');
     };
 
-    document.getElementById('whatsapp-float').onclick=()=>{
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}`,'_blank');
-    };
-
-    cartHeader.onclick=()=>cartPanel.classList.toggle('minimized');
-    cartPanel.onclick=(e)=>{
-      if(cartPanel.classList.contains('minimized') && e.target===cartPanel)
-        cartPanel.classList.remove('minimized');
+    document.getElementById('cart-toggle').onclick=()=>{
+      const cart=document.getElementById('cart');
+      cart.classList.toggle('minimized');
+      document.getElementById('toggle-btn').textContent=cart.classList.contains('minimized')?'▲':'▼';
     };
 
     document.getElementById('year').textContent=new Date().getFullYear();
-    renderProducts(); renderCart();
+    renderProducts();
+    renderCart();
   </script>
 </body>
 </html>
