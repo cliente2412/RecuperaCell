@@ -175,27 +175,27 @@
     </div>
   </aside>
 
-  <footer>Recupera Cell © <span id="year"></span> — Desenvolvido por Eliseu Tach</footer>
+  <footer>Eliseu Tech Manutenções © <span id="year"></span> — Desenvolvido por Eliseu Tach</footer>
 
   <script>
     const WHATSAPP_NUMBER = '5524988421242';
-    const JUROS_MENSAL = 0.03; // 3% ao mês
+    const JUROS_MENSAL = 0.03;
     const MAX_PARCELAS = 12;
 
     const PRODUCTS = [
-      {id:1, name:'Película De IPhone/Android', price:10,00},
-      {id:2, name:'Capinha iPhone', price:28,00},
-      {id:3, name:'Carregador/USB-C', price:,00},
-      {id:4, name:'Carregador/USB-V8, price:,00},
-      {id:5, name:'Película Privativa, price:15,00},
-      {id:6, name:'Capinha Silicone', price:15,00}
-      {id:6, name:'cabo/USB-C', price:10,00}
-      {id:6, name:'cabo/USB-V', price:10,00}
-      {id:6, name:'cabo/USB-IPHONE', price:25,00}
-      {id:6, name:'Fone', price:18,00}
-      {id:6, name:'Mini/Caixinha/Som,' price:25,00}
-      {id:6, name:'Fone-Bluetooth', price:45,00}
-      {id:6, name:'Pretinho', price:18,00}
+      {id:1, name:'Película de iPhone/Android', price:10.00},
+      {id:2, name:'Capinha iPhone', price:28.00},
+      {id:3, name:'Carregador USB-C', price:35.00},
+      {id:4, name:'Carregador V8', price:30.00},
+      {id:5, name:'Película Privativa', price:15.00},
+      {id:6, name:'Capinha Silicone', price:15.00},
+      {id:7, name:'Cabo USB-C', price:10.00},
+      {id:8, name:'Cabo USB-V8', price:10.00},
+      {id:9, name:'Cabo iPhone (Lightning)', price:25.00},
+      {id:10, name:'Fone de Ouvido', price:18.00},
+      {id:11, name:'Mini Caixinha de Som', price:25.00},
+      {id:12, name:'Fone Bluetooth', price:45.00},
+      {id:13, name:'Pretinho', price:18.00}
     ];
 
     const money = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
@@ -203,7 +203,6 @@
     const save = ()=>localStorage.setItem('rc_cart',JSON.stringify(CART));
 
     function calcParcelado(valor, parcelas, juros){
-      // fórmula: valor * ((1 + juros)^parcelas * juros) / ((1 + juros)^parcelas - 1)
       const v = valor * ((Math.pow(1 + juros, parcelas) * juros) / (Math.pow(1 + juros, parcelas) - 1));
       return v;
     }
@@ -273,7 +272,7 @@
       if(Object.keys(CART).length===0){alert('Carrinho vazio');return;}
       const phone=document.getElementById('phone').value.trim();
       const obs=document.getElementById('obs').value.trim();
-      let msg='*Pedido Recupera Cell*%0A';
+      let msg='*Pedido Eliseu Tech Manutenções*%0A';
       let total=0;
       for(const i of Object.values(CART)){
         total+=i.price*i.qty;
